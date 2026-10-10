@@ -1,9 +1,23 @@
 import { useState } from 'react';
 import { ARCHITECTURE_LAYERS } from '../data/projectData';
-import { Layers, ArrowRight, Database, Mail, Code, CheckCircle } from 'lucide-react';
+import { Layers, ArrowRight, Database, Mail, Code, CheckCircle, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function ArchitectureView() {
   const [selectedStep, setSelectedStep] = useState(ARCHITECTURE_LAYERS[0]);
+
+  const currentStepIndex = ARCHITECTURE_LAYERS.findIndex(l => l.id === selectedStep.id);
+
+  const handlePrev = () => {
+    if (currentStepIndex > 0) {
+      setSelectedStep(ARCHITECTURE_LAYERS[currentStepIndex - 1]);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentStepIndex < ARCHITECTURE_LAYERS.length - 1) {
+      setSelectedStep(ARCHITECTURE_LAYERS[currentStepIndex + 1]);
+    }
+  };
 
   return (
     <div className="section-container animate-fade-in">
@@ -18,34 +32,74 @@ export default function ArchitectureView() {
         </p>
       </div>
 
-      {/* Interactive Step Track */}
+      {/* Interactive Step Track Wrapper */}
       <div className="lifecycle-track-wrapper glass-panel">
-        <div className="lifecycle-step-bar">
-          {ARCHITECTURE_LAYERS.map((layer) => {
-            const isSelected = selectedStep.id === layer.id;
-            return (
-              <button
-                key={layer.id}
-                className={`lifecycle-step-node ${isSelected ? 'active' : ''}`}
-                onClick={() => setSelectedStep(layer)}
-              >
-                <div className="node-number">{layer.step}</div>
-                <div className="node-label-group">
-                  <span className="node-title">{layer.title}</span>
-                  <span className="node-subtitle">{layer.subtitle}</span>
-                </div>
-              </button>
-            );
-          })}
+        
+        {/* Progress bar across top of steps */}
+        <div className="lifecycle-progress-track">
+          <div 
+            className="lifecycle-progress-fill"
+            style={{ width: `${((currentStepIndex + 1) / ARCHITECTURE_LAYERS.length) * 100}%` }}
+          />
+        </div>
+
+        {/* Horizontal Stepper Grid / Scroll Track */}
+        <div className="lifecycle-step-bar-container">
+          <div className="lifecycle-step-bar">
+            {ARCHITECTURE_LAYERS.map((layer) => {
+              const isSelected = selectedStep.id === layer.id;
+              const isCompleted = layer.step < selectedStep.step;
+              return (
+                <button
+                  key={layer.id}
+                  className={`lifecycle-step-node ${isSelected ? 'active' : ''} ${isCompleted ? 'completed' : ''}`}
+                  onClick={() => setSelectedStep(layer)}
+                >
+                  <div className="node-top-row">
+                    <div className="node-number">{layer.step}</div>
+                    {isSelected && <span className="active-glow-dot" title="Active Step"></span>}
+                  </div>
+                  <div className="node-label-group">
+                    <span className="node-title">{layer.title}</span>
+                    <span className="node-subtitle">{layer.subtitle}</span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Selected Step Deep Dive Inspector */}
         <div className="lifecycle-detail-panel">
           <div className="detail-header">
-            <div className="detail-step-badge">
-              Step {selectedStep.step} of 7: {selectedStep.title}
+            <div className="detail-step-badge-group">
+              <span className="detail-step-badge">
+                Step {selectedStep.step} of 7: {selectedStep.title}
+              </span>
+              <span className="detail-file-location">{selectedStep.subtitle}</span>
             </div>
-            <span className="detail-file-location">{selectedStep.subtitle}</span>
+
+            {/* Stepper Navigation Buttons */}
+            <div className="step-nav-buttons">
+              <button 
+                className="step-nav-btn"
+                disabled={currentStepIndex === 0}
+                onClick={handlePrev}
+                title="Previous step in pipeline"
+              >
+                <ChevronLeft size={15} />
+                <span>Prev Step</span>
+              </button>
+              <button 
+                className="step-nav-btn"
+                disabled={currentStepIndex === ARCHITECTURE_LAYERS.length - 1}
+                onClick={handleNext}
+                title="Next step in pipeline"
+              >
+                <span>Next Step</span>
+                <ChevronRight size={15} />
+              </button>
+            </div>
           </div>
 
           <p className="detail-description">{selectedStep.desc}</p>
