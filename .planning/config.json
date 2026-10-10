@@ -1,0 +1,13 @@
+{
+  "mode": "yolo",
+  "granularity": "standard",
+  "parallelization": true,
+  "commit_docs": false,
+  "model_profile": "adaptive",
+  "workflow": {
+    "research": false,
+    "plan_check": false,
+    "verifier": false,
+    "compact_content": false
+  }
+}
