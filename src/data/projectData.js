@@ -1,32 +1,60 @@
 // FreelyEmail Showcase Project Data
 
 export const ECOSYSTEM_INFO = {
-  name: "FreelyEmail",
+  name: "FreelyEmail Ecosystem",
   version: "1.0.0",
-  tagline: "Transactional Emails for Node.js, Without the Friction",
-  description: "A lightweight, resilient transactional email suite consisting of a streamlined Express REST API and a zero-dependency Node.js client SDK. Designed for high developer ergonomics, security, and fail-safe delivery.",
+  tagline: "Transactional Emails for Node.js + Centralized Real-Time Logging",
+  description: "A complete 4-project email and telemetry ecosystem consisting of an Express REST API, a zero-dependency client SDK, a dedicated TypeScript Central Logging Microservice, and a real-time React 19 Logging Dashboard.",
   stats: [
     { label: "Client Dependencies", value: "0", note: "Native Node 18+ Fetch" },
     { label: "API Endpoints", value: "4", note: "OTP, Links, Notifications" },
-    { label: "DB Resilience", value: "Fail-Safe", note: "Non-blocking logging" },
-    { label: "Transporter Overhead", value: "Singleton", note: "SMTP pool reuse" },
+    { label: "Ecosystem Microservices", value: "4 Repos", note: "API, SDK, Logger, UI" },
+    { label: "Logging Architecture", value: "Decoupled", note: "TypeScript + Real-time Trace" },
   ],
   repos: [
     {
       name: "FreelyEmail-API",
       type: "REST Service",
       role: "Central Email Engine",
+      port: ":5000",
+      localUrl: "http://localhost:5000",
+      githubUrl: "https://github.com/Harshit107/FreelyEmail-API",
       language: "Node.js (Express, Mongoose, Nodemailer)",
-      path: "d:/Projects/Live/Groups/FreelyEmail-API",
-      summary: "Handles SMTP connection caching, rate limiting, cryptographic OTP generation, HTML template rendering, and resilient Mongoose delivery logs."
+      path: "Groups/FreelyEmail-API",
+      summary: "Handles Brevo SMTP connection caching, rate limiting, cryptographic OTP generation, HTML template rendering, and fail-safe forwarding to the Central Logging Service."
     },
     {
       name: "FreelyEmail-Node-library",
-      type: "NPM Package",
-      role: "Client SDK",
-      language: "Node.js >= 18 (Zero Dependencies, TypeScript)",
-      path: "d:/Projects/Live/Groups/FreelyEmail-Node-library",
+      type: "Client SDK",
+      role: "Zero-Dependency Client",
+      port: "NPM Module",
+      localUrl: null,
+      githubUrl: "https://github.com/Harshit107/FreelyEmail-Node-library",
+      language: "Node.js >= 18 (TypeScript Declarations)",
+      path: "Groups/FreelyEmail-Node-library",
       summary: "Ergonomic client wrapper using native global fetch, AbortController timeouts, full TypeScript type declarations, and structured error handling."
+    },
+    {
+      name: "central-logging-service",
+      type: "Microservice",
+      role: "Central Audit Logger",
+      port: ":5001",
+      localUrl: "http://localhost:5001",
+      githubUrl: "https://github.com/Harshit107/central-logging-service",
+      language: "TypeScript (Express, Mongoose Atlas)",
+      path: "Groups/central-logging-service",
+      summary: "Dedicated logging microservice managing error_logs, info_logs, and user_data_logs with x-logging-key authentication and indexed messageId queries."
+    },
+    {
+      name: "logging-dashboard",
+      type: "Web Application",
+      role: "Real-Time Trace Dashboard",
+      port: ":5174",
+      localUrl: "http://localhost:5174",
+      githubUrl: "https://github.com/Harshit107/logging-dashboard",
+      language: "React 19 + TypeScript (Vite + Proxy)",
+      path: "Groups/logging-dashboard",
+      summary: "High-density monitoring interface for tracing email lifecycles by Message ID, live activity feeds, schema inspection, and test API simulation."
     }
   ]
 };
@@ -39,7 +67,7 @@ export const ARCHITECTURE_LAYERS = [
     subtitle: "Consuming Service",
     desc: "Application calls FreelyEmailClient SDK methods or sends raw HTTP POST requests to the API.",
     code: `const client = new FreelyEmailClient({
-  baseUrl: 'http://localhost:3000/api/v1',
+  baseUrl: 'http://localhost:5000/api/v1',
   defaultApp: 'My SaaS'
 });
 await client.sendOtp({ recipient: 'user@example.com', otp: '492810' });`
@@ -109,6 +137,18 @@ if (errors.length > 0) throw new APIError(errors.join(', '), 400);`
 } catch (dbErr) {
   logger.warn('Failed to persist email record, delivery was successful:', dbErr);
 }`
+  },
+  {
+    step: 8,
+    id: "central-logging",
+    title: "Central Logging Service & Dashboard",
+    subtitle: "central-logging-service (:5001) & logging-dashboard (:5174)",
+    desc: "Asynchronously dispatches user-data, operational info, and error logs to the dedicated TypeScript Central Logging Service. Traces are instantly searchable by Message ID in the live Dashboard.",
+    code: `// Dispatched asynchronously to Central Logging Service
+await centralLogger.logUserData({
+  messageId, sender, recipient, app, subject, type, status: 'dispatched'
+});
+// Dashboard traces instantly via http://localhost:5174/api/v1/logs/user-data/:messageId`
   }
 ];
 
@@ -351,19 +391,25 @@ export const TECHNICAL_DECISIONS = [
     status: "Security Hardening",
     why: "Unsanitized user inputs in email subjects or sender display names can introduce carriage return / line feed (`\\r\\n`) characters to inject malicious SMTP headers (Bcc spamming).",
     impact: "All email headers are stripped of CRLF before passing to Nodemailer."
+  },
+  {
+    title: "Decoupled Centralized Logging Microservice",
+    status: "Architectural Decoupling",
+    why: "Monolithic direct-to-database logging couples API lifecycle and limits cross-application auditability. Evolving logging into an independent TypeScript microservice (:5001) with x-logging-key authentication allows any service to stream error, info, and user-data logs into dedicated Mongoose models.",
+    impact: "Unified audit trail across multiple applications, independent database scalability, and zero downtime observability."
   }
 ];
 
 export const DEPENDENCIES_TABLE = [
   { name: "express", project: "FreelyEmail-API", version: "^4.18.2", purpose: "Fast, unopinionated REST API framework" },
   { name: "nodemailer", project: "FreelyEmail-API", version: "^6.9.7", purpose: "Reliable SMTP client with connection pooling" },
-  { name: "mongoose", project: "FreelyEmail-API", version: "^8.0.3", purpose: "MongoDB ODM for delivery audit logging" },
-  { name: "helmet", project: "FreelyEmail-API", version: "^7.1.0", purpose: "Sets HTTP response security headers" },
-  { name: "cors", project: "FreelyEmail-API", version: "^2.8.5", purpose: "Cross-Origin Resource Sharing control" },
+  { name: "mongoose", project: "FreelyEmail-API & Logger", version: "^8.0.3", purpose: "MongoDB ODM for delivery audit logging" },
+  { name: "tsx & typescript", project: "central-logging-service", version: "^5.0+", purpose: "Zero-build TypeScript execution and strict typing" },
+  { name: "helmet & cors", project: "FreelyEmail-API & Logger", version: "Latest", purpose: "Sets HTTP response security headers and CORS guards" },
   { name: "express-rate-limit", project: "FreelyEmail-API", version: "^7.1.5", purpose: "DDoS and spam protection (100 reqs / 15m)" },
-  { name: "dotenv", project: "FreelyEmail-API", version: "^16.3.1", purpose: "Zero-dependency environment variable loader" },
   { name: "Native Fetch", project: "FreelyEmail-Node-library", version: "Node >= 18", purpose: "Zero-dependency HTTP requests using web standards" },
-  { name: "TypeScript Declarations", project: "FreelyEmail-Node-library", version: "index.d.ts", purpose: "Strict types, IntelliSense, and auto-completion" }
+  { name: "React 19 & Vite", project: "logging-dashboard", version: "19.x", purpose: "High-density real-time audit trail inspector and live feed" },
+  { name: "lucide-react", project: "Showcase & Dashboard", version: "^1.x", purpose: "Modern icons for telemetry and state indicators" }
 ];
 
 export const DEV_GUIDE_STEPS = [

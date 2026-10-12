@@ -74,7 +74,7 @@ export default function ArchitectureView() {
           <div className="detail-header">
             <div className="detail-step-badge-group">
               <span className="detail-step-badge">
-                Step {selectedStep.step} of 7: {selectedStep.title}
+                Step {selectedStep.step} of {ARCHITECTURE_LAYERS.length}: {selectedStep.title}
               </span>
               <span className="detail-file-location">{selectedStep.subtitle}</span>
             </div>

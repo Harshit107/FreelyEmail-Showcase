@@ -39,16 +39,34 @@ export default function Footer({ setActiveTab }) {
           <h5 className="footer-heading">Workspace Repositories</h5>
           <ul className="footer-links-list">
             <li>
-              <span className="footer-repo-label">API Service:</span>
-              <span className="footer-repo-path"><code>Groups/FreelyEmail-API</code></span>
+              <span className="footer-repo-label">Email API (:5000):</span>
+              <a href="https://github.com/Harshit107/FreelyEmail-API" target="_blank" rel="noopener noreferrer" className="footer-repo-path">
+                <code>FreelyEmail-API</code>
+              </a>
             </li>
             <li>
-              <span className="footer-repo-label">Node Library:</span>
-              <span className="footer-repo-path"><code>Groups/FreelyEmail-Node-library</code></span>
+              <span className="footer-repo-label">Client SDK:</span>
+              <a href="https://github.com/Harshit107/FreelyEmail-Node-library" target="_blank" rel="noopener noreferrer" className="footer-repo-path">
+                <code>FreelyEmail-Node-library</code>
+              </a>
             </li>
             <li>
-              <span className="footer-repo-label">Showcase Portal:</span>
-              <span className="footer-repo-path"><code>Groups/FreelyEmail-Showcase</code></span>
+              <span className="footer-repo-label">Logging Service (:5001):</span>
+              <a href="https://github.com/Harshit107/central-logging-service" target="_blank" rel="noopener noreferrer" className="footer-repo-path">
+                <code>central-logging-service</code>
+              </a>
+            </li>
+            <li>
+              <span className="footer-repo-label">Logging Dashboard (:5174):</span>
+              <a href="https://github.com/Harshit107/logging-dashboard" target="_blank" rel="noopener noreferrer" className="footer-repo-path">
+                <code>logging-dashboard</code>
+              </a>
+            </li>
+            <li>
+              <span className="footer-repo-label">Showcase Portal (:5173):</span>
+              <a href="https://github.com/Harshit107/FreelyEmail-Showcase" target="_blank" rel="noopener noreferrer" className="footer-repo-path">
+                <code>FreelyEmail-Showcase</code>
+              </a>
             </li>
           </ul>
         </div>

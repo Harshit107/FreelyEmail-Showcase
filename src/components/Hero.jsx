@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ECOSYSTEM_INFO } from '../data/projectData';
-import { ArrowRight, Zap, Server, Package, MailCheck, Copy, Check } from 'lucide-react';
+import { ArrowRight, Zap, Server, Package, MailCheck, Copy, Check, ExternalLink, Activity, GitBranch, Layers } from 'lucide-react';
 
 export default function Hero({ setActiveTab }) {
   const [copiedInstall, setCopiedInstall] = useState(false);
@@ -18,8 +18,8 @@ export default function Hero({ setActiveTab }) {
         {/* Top Announcement Pill */}
         <div className="hero-pill-badge">
           <span className="pill-dot"></span>
-          <span className="pill-text">FreelyEmail Ecosystem v1.0 Released</span>
-          <span className="pill-sub">Zero-Dependency Node SDK &bull; Express API</span>
+          <span className="pill-text">FreelyEmail Ecosystem v1.0 + Centralized Logging</span>
+          <span className="pill-sub">4 Interconnected Projects &bull; TypeScript &bull; React 19</span>
         </div>
 
         {/* Hero Title & Pitch */}
@@ -30,9 +30,9 @@ export default function Hero({ setActiveTab }) {
         </h1>
 
         <p className="hero-subtext">
-          A coupled, resilient email delivery ecosystem designed for developer speed.
-          Includes an Express REST service with fail-safe MongoDB logging and an ultra-lightweight
-          Node 18+ client library built with zero external dependencies.
+          A resilient, multi-service email and logging infrastructure designed for developer speed.
+          Includes an Express REST API, a zero-dependency client SDK, a dedicated TypeScript Central Logging Microservice,
+          and a real-time audit trail dashboard.
         </p>
 
         {/* Quick Action Buttons */}
@@ -45,20 +45,32 @@ export default function Hero({ setActiveTab }) {
             <ArrowRight size={16} />
           </button>
 
+          <a 
+            href="http://localhost:5174" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="btn btn-secondary"
+            title="Open Central Logging Dashboard"
+          >
+            <Activity size={16} className="text-indigo-400" />
+            <span>Logging Dashboard (:5174)</span>
+            <ExternalLink size={13} />
+          </a>
+
+          <button 
+            className="btn btn-secondary"
+            onClick={() => setActiveTab('architecture')}
+          >
+            <Layers size={16} />
+            <span>8-Step Architecture</span>
+          </button>
+
           <button 
             className="btn btn-secondary"
             onClick={() => setActiveTab('sdk')}
           >
             <Package size={16} />
-            <span>Explore Node SDK</span>
-          </button>
-
-          <button 
-            className="btn btn-secondary"
-            onClick={() => setActiveTab('templates')}
-          >
-            <MailCheck size={16} />
-            <span>Live Template Sandbox</span>
+            <span>Node SDK</span>
           </button>
         </div>
 
@@ -92,24 +104,58 @@ export default function Hero({ setActiveTab }) {
           ))}
         </div>
 
-        {/* Dual Project Overview Cards */}
-        <div className="hero-repos-grid">
+        {/* 4 Connected Repositories Grid */}
+        <div className="hero-repos-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
           {ECOSYSTEM_INFO.repos.map((repo, idx) => (
-            <div key={idx} className="repo-card glass-panel">
-              <div className="repo-card-header">
-                <div className="repo-type-badge">
-                  {repo.type === 'REST Service' ? <Server size={14} /> : <Package size={14} />}
-                  <span>{repo.type}</span>
+            <div key={idx} className="repo-card glass-panel" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div>
+                <div className="repo-card-header">
+                  <div className="repo-type-badge">
+                    {repo.type === 'REST Service' || repo.type === 'Microservice' ? <Server size={14} /> : repo.type === 'Web Application' ? <Activity size={14} /> : <Package size={14} />}
+                    <span>{repo.type}</span>
+                    {repo.port && <span style={{ opacity: 0.8, fontSize: '11px', marginLeft: '4px' }}>{repo.port}</span>}
+                  </div>
+                  <span className="repo-role-tag">{repo.role}</span>
                 </div>
-                <span className="repo-role-tag">{repo.role}</span>
+
+                <h3 className="repo-name">{repo.name}</h3>
+                <p className="repo-summary">{repo.summary}</p>
               </div>
 
-              <h3 className="repo-name">{repo.name}</h3>
-              <p className="repo-summary">{repo.summary}</p>
+              <div style={{ marginTop: '16px' }}>
+                <div className="repo-tech-pill" style={{ marginBottom: '12px' }}>
+                  <Zap size={13} color="var(--accent-cyan)" />
+                  <span>{repo.language}</span>
+                </div>
 
-              <div className="repo-tech-pill">
-                <Zap size={13} color="var(--accent-cyan)" />
-                <span>{repo.language}</span>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  {repo.githubUrl && (
+                    <a
+                      href={repo.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-secondary btn-sm"
+                      style={{ fontSize: '11px', padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                    >
+                      <GitBranch size={12} />
+                      <span>GitHub</span>
+                      <ExternalLink size={10} />
+                    </a>
+                  )}
+                  {repo.localUrl && (
+                    <a
+                      href={repo.localUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-secondary btn-sm"
+                      style={{ fontSize: '11px', padding: '4px 10px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                    >
+                      <Activity size={12} />
+                      <span>Open Live</span>
+                      <ExternalLink size={10} />
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           ))}
@@ -119,3 +165,4 @@ export default function Hero({ setActiveTab }) {
     </section>
   );
 }
+
