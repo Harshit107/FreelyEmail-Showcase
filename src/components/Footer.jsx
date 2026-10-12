@@ -1,4 +1,5 @@
 import { Mail } from 'lucide-react';
+import { ECOSYSTEM_URLS } from '../data/projectData';
 
 export default function Footer({ setActiveTab }) {
   return (
@@ -36,36 +37,36 @@ export default function Footer({ setActiveTab }) {
 
         {/* Resources & Workspace Reference */}
         <div className="footer-links-col">
-          <h5 className="footer-heading">Workspace Repositories</h5>
+          <h5 className="footer-heading">Ecosystem & Services</h5>
           <ul className="footer-links-list">
             <li>
-              <span className="footer-repo-label">Email API (:5000):</span>
-              <a href="https://github.com/Harshit107/FreelyEmail-API" target="_blank" rel="noopener noreferrer" className="footer-repo-path">
-                <code>FreelyEmail-API</code>
+              <span className="footer-repo-label">Email API:</span>
+              <a href={ECOSYSTEM_URLS.MAIL_API} target="_blank" rel="noopener noreferrer" className="footer-repo-path">
+                <code>freelyemail-api.harshit107.online</code>
+              </a>
+            </li>
+            <li>
+              <span className="footer-repo-label">Logging Service:</span>
+              <a href={ECOSYSTEM_URLS.LOGGER_API} target="_blank" rel="noopener noreferrer" className="footer-repo-path">
+                <code>logger-api.harshit107.online</code>
+              </a>
+            </li>
+            <li>
+              <span className="footer-repo-label">Logging UI:</span>
+              <a href={ECOSYSTEM_URLS.LOGGER_UI} target="_blank" rel="noopener noreferrer" className="footer-repo-path">
+                <code>logger.harshit107.online</code>
+              </a>
+            </li>
+            <li>
+              <span className="footer-repo-label">Showcase UI:</span>
+              <a href={ECOSYSTEM_URLS.SHOWCASE_UI} target="_blank" rel="noopener noreferrer" className="footer-repo-path">
+                <code>freelyemail.harshit107.online</code>
               </a>
             </li>
             <li>
               <span className="footer-repo-label">Client SDK:</span>
-              <a href="https://github.com/Harshit107/FreelyEmail-Node-library" target="_blank" rel="noopener noreferrer" className="footer-repo-path">
+              <a href={ECOSYSTEM_URLS.REPOS.SDK} target="_blank" rel="noopener noreferrer" className="footer-repo-path">
                 <code>FreelyEmail-Node-library</code>
-              </a>
-            </li>
-            <li>
-              <span className="footer-repo-label">Logging Service (:5001):</span>
-              <a href="https://github.com/Harshit107/central-logging-service" target="_blank" rel="noopener noreferrer" className="footer-repo-path">
-                <code>central-logging-service</code>
-              </a>
-            </li>
-            <li>
-              <span className="footer-repo-label">Logging Dashboard (:5174):</span>
-              <a href="https://github.com/Harshit107/logging-dashboard" target="_blank" rel="noopener noreferrer" className="footer-repo-path">
-                <code>logging-dashboard</code>
-              </a>
-            </li>
-            <li>
-              <span className="footer-repo-label">Showcase Portal (:5173):</span>
-              <a href="https://github.com/Harshit107/FreelyEmail-Showcase" target="_blank" rel="noopener noreferrer" className="footer-repo-path">
-                <code>FreelyEmail-Showcase</code>
               </a>
             </li>
           </ul>

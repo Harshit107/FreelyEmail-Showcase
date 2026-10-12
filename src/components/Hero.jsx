@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ECOSYSTEM_INFO } from '../data/projectData';
+import { ECOSYSTEM_INFO, ECOSYSTEM_URLS } from '../data/projectData';
 import { ArrowRight, Zap, Server, Package, MailCheck, Copy, Check, ExternalLink, Activity, GitBranch, Layers } from 'lucide-react';
 
 export default function Hero({ setActiveTab }) {
@@ -46,14 +46,14 @@ export default function Hero({ setActiveTab }) {
           </button>
 
           <a 
-            href="http://localhost:5174" 
+            href={ECOSYSTEM_URLS.LOGGER_UI} 
             target="_blank" 
             rel="noopener noreferrer"
             className="btn btn-secondary"
             title="Open Central Logging Dashboard"
           >
             <Activity size={16} className="text-indigo-400" />
-            <span>Logging Dashboard (:5174)</span>
+            <span>Logging Dashboard</span>
             <ExternalLink size={13} />
           </a>
 
@@ -142,9 +142,9 @@ export default function Hero({ setActiveTab }) {
                       <ExternalLink size={10} />
                     </a>
                   )}
-                  {repo.localUrl && (
+                  {repo.liveUrl && (
                     <a
-                      href={repo.localUrl}
+                      href={repo.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn btn-secondary btn-sm"

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { API_ENDPOINTS } from '../data/projectData';
+import { API_ENDPOINTS, ECOSYSTEM_URLS } from '../data/projectData';
 import { Check, Copy, Play, RefreshCw, Terminal } from 'lucide-react';
 
 export default function ApiPlayground() {
@@ -80,15 +80,16 @@ export default function ApiPlayground() {
   // Generate code snippet dynamically based on current form inputs
   const generateSnippet = () => {
     const jsonStr = JSON.stringify(requestBody, null, 2);
+    const apiBase = ECOSYSTEM_URLS.MAIL_API;
 
     if (clientType === 'curl') {
-      return `curl -X POST http://localhost:3000${selectedEndpoint.path} \\
+      return `curl -X POST ${apiBase}${selectedEndpoint.path} \\
   -H "Content-Type: application/json" \\
   -d '${JSON.stringify(requestBody)}'`;
     }
 
     if (clientType === 'fetch') {
-      return `const response = await fetch('http://localhost:3000${selectedEndpoint.path}', {
+      return `const response = await fetch('${apiBase}${selectedEndpoint.path}', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify(${jsonStr})
@@ -106,7 +107,7 @@ console.log(result);`;
     return `const { FreelyEmailClient } = require('freelyemail');
 
 const client = new FreelyEmailClient({
-  baseUrl: 'http://localhost:3000/api/v1'
+  baseUrl: '${apiBase}/api/v1'
 });
 
 const result = await client.${sdkMethodName}(${jsonStr});

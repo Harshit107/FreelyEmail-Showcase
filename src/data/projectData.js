@@ -1,5 +1,23 @@
 // FreelyEmail Showcase Project Data
 
+/**
+ * Centralized Ecosystem URLs for FreelyEmail Showcase
+ * Change domains here to propagate across the entire showcase project.
+ */
+export const ECOSYSTEM_URLS = Object.freeze({
+  LOGGER_API: "https://logger-api.harshit107.online",
+  LOGGER_UI: "https://logger.harshit107.online",
+  MAIL_API: "https://freelyemail-api.harshit107.online",
+  SHOWCASE_UI: "https://freelyemail.harshit107.online",
+  REPOS: Object.freeze({
+    API: "https://github.com/Harshit107/FreelyEmail-API",
+    SDK: "https://github.com/Harshit107/FreelyEmail-Node-library",
+    LOGGER_SERVICE: "https://github.com/Harshit107/central-logging-service",
+    DASHBOARD: "https://github.com/Harshit107/logging-dashboard",
+    SHOWCASE: "https://github.com/Harshit107/FreelyEmail-Showcase",
+  }),
+});
+
 export const ECOSYSTEM_INFO = {
   name: "FreelyEmail Ecosystem",
   version: "1.0.0",
@@ -16,9 +34,9 @@ export const ECOSYSTEM_INFO = {
       name: "FreelyEmail-API",
       type: "REST Service",
       role: "Central Email Engine",
-      port: ":5000",
-      localUrl: "http://localhost:5000",
-      githubUrl: "https://github.com/Harshit107/FreelyEmail-API",
+      port: "Online",
+      liveUrl: ECOSYSTEM_URLS.MAIL_API,
+      githubUrl: ECOSYSTEM_URLS.REPOS.API,
       language: "Node.js (Express, Mongoose, Nodemailer)",
       path: "Groups/FreelyEmail-API",
       summary: "Handles Brevo SMTP connection caching, rate limiting, cryptographic OTP generation, HTML template rendering, and fail-safe forwarding to the Central Logging Service."
@@ -28,8 +46,8 @@ export const ECOSYSTEM_INFO = {
       type: "Client SDK",
       role: "Zero-Dependency Client",
       port: "NPM Module",
-      localUrl: null,
-      githubUrl: "https://github.com/Harshit107/FreelyEmail-Node-library",
+      liveUrl: null,
+      githubUrl: ECOSYSTEM_URLS.REPOS.SDK,
       language: "Node.js >= 18 (TypeScript Declarations)",
       path: "Groups/FreelyEmail-Node-library",
       summary: "Ergonomic client wrapper using native global fetch, AbortController timeouts, full TypeScript type declarations, and structured error handling."
@@ -38,9 +56,9 @@ export const ECOSYSTEM_INFO = {
       name: "central-logging-service",
       type: "Microservice",
       role: "Central Audit Logger",
-      port: ":5001",
-      localUrl: "http://localhost:5001",
-      githubUrl: "https://github.com/Harshit107/central-logging-service",
+      port: "Online",
+      liveUrl: ECOSYSTEM_URLS.LOGGER_API,
+      githubUrl: ECOSYSTEM_URLS.REPOS.LOGGER_SERVICE,
       language: "TypeScript (Express, Mongoose Atlas)",
       path: "Groups/central-logging-service",
       summary: "Dedicated logging microservice managing error_logs, info_logs, and user_data_logs with x-logging-key authentication and indexed messageId queries."
@@ -49,9 +67,9 @@ export const ECOSYSTEM_INFO = {
       name: "logging-dashboard",
       type: "Web Application",
       role: "Real-Time Trace Dashboard",
-      port: ":5174",
-      localUrl: "http://localhost:5174",
-      githubUrl: "https://github.com/Harshit107/logging-dashboard",
+      port: "Online",
+      liveUrl: ECOSYSTEM_URLS.LOGGER_UI,
+      githubUrl: ECOSYSTEM_URLS.REPOS.DASHBOARD,
       language: "React 19 + TypeScript (Vite + Proxy)",
       path: "Groups/logging-dashboard",
       summary: "High-density monitoring interface for tracing email lifecycles by Message ID, live activity feeds, schema inspection, and test API simulation."
